@@ -1,0 +1,600 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<chapter xml:id="ch_mod_arith" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Modular Arithmetic</title>
+  <introduction>
+    <p>
+	  Modular arithmetic, rather than concerning itself with the real numbers, rationals, or even the entire integers, defines a way of doing arithmetic on a limited set of integers where mathematical operations <q>wrap around</q> if they go over a maximum value or below zero. The most tangible real-world example is a clock. If it is 21:00 (9 PM), four hours later it will be 1:00 (1 AM), not 25:00 (13 PM). We can think of adding and subtracting time of being done <em>modulo</em> 24 (or modulo 12 if you use a 12-hour clock), meaning after we do addition, subtraction, etc., we take the remainder when dividing by 24 (or 12) to get our final answer.
+	</p>
+  </introduction>
+
+  <section xml:id="equivalence">
+    <title>Equivalence</title>
+
+    <p>
+	  The definition of modular equivalence is as follows:
+      <definition xml:id="mod-equiv-def">
+        <statement>
+	      <p>
+	        Two integers, <m>a</m> and <m>b</m> are <term>equivalent modulo <m>m</m></term>, written <m>a\equiv b\pmod{m}</m>, if and only if <m>a=b+mk</m> for some integer <m>k</m>.
+	      </p>
+	    </statement>
+      </definition>
+	</p>
+
+    <p>
+      Other equivalent statements of <xref ref="mod-equiv-def" /> include:
+	  <ul>
+	    <li><m>a</m> and <m>b</m> have the same remainder when divided by <m>m</m>.</li>
+	    <li><m>a-b</m> is evenly divisible by <m>m</m>.</li>
+	  </ul>
+	  One can think of this definition as grouping the integers into categories based on their remainder modulo <m>m</m>. For instance, if we let <m>m=5</m>, then <m>0\equiv 5\equiv 10\equiv -5\equiv\dots\pmod{5}</m>, and <m>1\equiv 6\equiv 11\equiv -4\dots\pmod{5}</m>. Any integer is equivalent to itself plus or minus some multiple of 5 modulo 5, and this fact holds for any modulus.
+    </p>
+
+    <p>
+      As another example, let's determine if 13 is equivalent to 7 modulo 6. We know that <m>13=1+6\cdot 2</m> and <m>7=1+6\cdot 1</m>, therefore 13 and 7 both have a remainder of 1 modulo 6, thus <m>13\equiv 7\pmod{6}</m>. As an example of where two numbers are not equivalent under modular arithmetic, note that 4 and 8 are not equivalent modulo 3 because <m>4=1+3\cdot 1</m> and <m>8=2+3\cdot 2</m>, and <m>1\ne 2</m>.
+    </p>
+
+	<exercises>
+	  <exercise label="modular-equivalence">
+	    <title>True/False</title>
+  
+	    <statement correct="yes">
+	  	  <p>
+	  	    <m>-2</m> is equivalent to <m>3</m> modulo <m>5</m>.
+	  	  </p>
+	    </statement>
+  
+	    <feedback>
+	  	  <p>
+	  	    The statement is correct. <m>3=-2+5\cdot 1</m>, so by <xref ref="mod-equiv-def" />, <m>-2\equiv 3\pmod{5}</m>.
+	  	  </p>
+	    </feedback>
+	  </exercise>
+
+	  <exercise label="modular-equivalence-2">
+		<title>Multiple Answer Multiple Choice</title>
+
+		<statement>
+		  Which of the following are equivalent to <m>0</m> modulo <m>10</m>?
+		</statement>
+
+		<choices>
+		  <choice correct="no">
+		    <statement><p><m>-9</m></p></statement>
+
+			<feedback>
+			  <p>This choice is not correct. <m>-9+10=1</m> so <m>-9\equiv 1\not\equiv 0\pmod{10}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="yes">
+		    <statement><p><m>0</m></p></statement>
+
+			<feedback>
+			  <p>This choice is correct. <m>0=0+10\cdot 0</m> so <m>0\equiv 0\pmod{10}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="no">
+		    <statement><p><m>555</m></p></statement>
+
+			<feedback>
+			  <p>This choice is not correct. <m>555=5+10\cdot 55</m> so <m>555\equiv 5\not\equiv 0\pmod{10}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="yes">
+		    <statement><p><m>3141592650</m></p></statement>
+
+			<feedback>
+			  <p>This choice is correct. <m>3141592650=0+10\cdot 314159265</m> so <m>3141592650\equiv 0\pmod{10}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="yes">
+		    <statement><p><m>2\cdot 5^{20}</m></p></statement>
+
+			<feedback>
+			  <p>This choice is correct. Note that <m>2\cdot 5^{20}=2\cdot 5\cdot 5^{19}=10\cdot 5^{19}</m>, so <m>2\cdot 5^{20}=0+10\cdot 5^{19}</m>, and therefore <m>2\cdot 5^{20}\equiv 0\pmod{10}</m>.</p>
+			</feedback>
+		  </choice>
+		</choices>
+	  </exercise>
+	</exercises>
+  </section>
+  
+  <section xml:id="mod-operation">
+    <title>The mod Operation</title>
+
+    <p>
+	  The statement <m>5\equiv 1\pmod{4}</m> is subtly different than the statement <m>5\imod 4=1</m>. The first statement is saying <q>5 is equivalent to 1 modulo 4</q> or in other words <q>5 and 1 have the same remainder when divided by 4.</q> On the other hand, the second statement is saying <q>the remainder of 5 divided by 4 is equal to 1.</q> Here we really mean <em>equal to</em>, not equivalent to. <m>5\imod 4\ne 5</m> even though <m>5\equiv 5\pmod{4}</m>.
+	</p>
+
+	<p>
+      The most convenient way to evaluate some expression in the form <m>n\imod m</m> is to keep adding or subtracting <m>m</m> from <m>n</m> until <m>0\le n&lt;m</m>. As an example, let's evaluate <m>99\imod 13</m>. <m>99-13=86</m>, <m>86-13=73</m>, etc., and eventually we see that <m>99-13\cdot 7=8</m>, therefore <m>99\imod 13=8</m>. For an example with negative numbers, let's evaluate <m>-7\imod 3</m>. <m>-7+3=-4,~-4+3=-1,~-1+3=2</m>, therefore <m>-7\imod 3=2</m>. It's also valid to add multiples of the modulus to skip some of the addition and subtraction steps.
+	</p>
+
+	<p>
+	  There is also a nifty equation for solving <m>n\imod m</m> as well.
+	  <md><mrow>n\imod m = n - m\left\lfloor \frac nm \right\rfloor</mrow></md>
+	  In this equation, <m>\left\lfloor \frac nm \right\rfloor</m> indicates the floor of the number <m>\frac nm</m>, or in other words, the fraction <m>\frac nm</m> rounded down to the nearest whole integer.
+	</p>
+
+	<p>
+	  We can also use the mod operation to convert in and out of modular equivalence.
+	  <theorem>
+        <statement>
+          For any integers <m>a</m> and <m>b</m>, and modulus <m>m</m>, <m>a\equiv b\pmod{m}</m> if and only if <m>a\imod m=b\imod m</m>.
+		</statement>
+	  </theorem>
+	</p>
+	<p>
+	  Although this theorem rarely comes up in 203, it can sometimes be easier to work with than <xref ref="mod-equiv-def" />.
+	</p>
+
+	<exercises>
+	  <exercisegroup>
+		<introduction>
+		  <p>For each of the following questions, compute the value of <m>n\imod m</m>.</p>
+		</introduction>
+
+		<exercise label="mod-comp-1">
+		  <title>Q1</title>
+
+		  <statement>
+			<m>17\imod 13=</m> <var />
+		  </statement>
+
+		  <setup>
+			<var>
+			  <condition number="4">
+			  	<feedback>
+				  <p>This is correct. <m>17-13=4</m>, and <m>0\le 4&lt; 13</m>, so <m>17\imod 13=4</m>.</p>
+				</feedback>
+			  </condition>
+
+			  <condition string=".*">
+			  	<feedback>
+				  <p>Incorrect.</p>
+				</feedback>
+			  </condition>
+			</var>
+		  </setup>
+		</exercise>
+
+		<exercise label="mod-comp-2">
+		  <title>Q2</title>
+
+		  <statement>
+			<m>5\imod 10=</m> <var />
+		  </statement>
+
+		  <setup>
+			<var>
+			  <condition number="5">
+			  	<feedback>
+				  <p>This is correct. <m>0\le 5&lt; 10</m>, so <m>5\imod 10=5</m>.</p>
+				</feedback>
+			  </condition>
+
+			  <condition string=".*">
+			  	<feedback>
+				  <p>Incorrect.</p>
+				</feedback>
+			  </condition>
+			</var>
+		  </setup>
+		</exercise>
+
+		<exercise label="mod-comp-3">
+		  <title>Q3</title>
+
+		  <statement>
+			<m>-3\imod 1=</m> <var />
+		  </statement>
+
+		  <setup>
+			<var>
+			  <condition number="0">
+			  	<feedback>
+				  <p>This is correct. <m>1</m> divides all integers evenly, so the remainder when dividing <m>-3</m> by <m>1</m> is <m>0</m>, so <m>-3\imod 1=0</m>.</p>
+				</feedback>
+			  </condition>
+
+			  <condition number="-3">
+			  	<feedback>
+				  <p>Incorrect. Remember that <m>\text{mod}</m> refers to the remainder when dividing two integers, not the result of the division itself.</p>
+				</feedback>
+			  </condition>
+
+			  <condition string=".*">
+			  	<feedback>
+				  <p>Incorrect.</p>
+				</feedback>
+			  </condition>
+			</var>
+		  </setup>
+		</exercise>
+	  </exercisegroup>
+	</exercises>
+  </section>
+
+  <section xml:id="arith">
+    <title>Arithmetic</title>
+
+    <p>
+      Addition, subtraction, and multiplication are all fairly straight-forward in modular arithmetic.
+	  <theorem xml:id="arith-thm">
+	    <statement>
+          Consider integers <m>a,b,c,d</m>, and <m>m</m> such that <m>a\equiv b\pmod{m}</m> and <m>c\equiv d\pmod{m}</m>. Then,
+	      <ul>
+	        <li><m>a+c\equiv b+d\pmod{m}</m></li>
+	        <li><m>a-c\equiv b-d\pmod{m}</m></li>
+	        <li><m>a\cdot c\equiv b\cdot d\pmod{m}</m></li>
+	      </ul>
+		</statement>
+	  </theorem>
+	</p>
+
+	<p>
+	  Let's consider a couple examples. Note that <m>3\equiv 5\pmod{2}</m> and <m>2\equiv -2\pmod{2}</m>. <m>3+2\equiv 5\equiv 1\pmod{2}</m> and <m>5+(-2)\equiv 5-2\equiv 3\equiv 1\pmod{2}</m>. Similarly, <m>3\cdot 2\equiv 6\equiv 0\pmod{2}</m> and <m>5\cdot(-2)\equiv -10\equiv 0\pmod{2}</m>. These theorems mean that you are allowed to manipulate equations with variables as well. For instance, if <m>2n\equiv 3\pmod{7}</m>, then <m>2n+1\equiv 3+1\equiv 4\pmod{7}</m> and <m>3\cdot 2n\equiv 3\cdot 3\pmod{7}</m>, i.e. <m>6n\equiv 9\pmod{7}</m>.
+	</p>
+
+	<exercises>
+	  <exercise label="mod-arith">
+	    <title>Multiple Answer Multiple Choice</title>
+
+		<statement>
+		  <p>Which of the following conditions ensure <m>2n\equiv 0\pmod{8}</m>?</p>
+		</statement>
+
+		<choices>
+		  <choice correct="yes">
+		    <statement><p><m>n=4</m></p></statement>
+
+			<feedback>
+			  <p>This choice is correct. If <m>n=4</m> then <m>2n=2\cdot 4=8\equiv 0\pmod{8}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="no">
+		    <statement><p><m>n</m> is even</p></statement>
+
+			<feedback>
+			  <p>This choice is not correct. Take <m>n=2</m> as a counter-example. Then <m>2n=4\equiv 4\not\equiv 0\pmod{8}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="no">
+		    <statement><p><m>n\ne 0</m></p></statement>
+
+			<feedback>
+			  <p>This choice is not correct. Take <m>n=1</m> as a counter-example. Then <m>2n=2\equiv 2\not\equiv 0\pmod{8}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="yes">
+		    <statement><p><m>n\equiv 0\pmod{4}</m></p></statement>
+
+			<feedback>
+			  <p>This choice is correct. If <m>n\equiv 0\pmod{4}</m>, then <m>n=4k</m> for some integer <m>k</m>. So <m>2n=2\cdot 4k=8k\equiv 0\pmod{8}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="no">
+		    <statement><p><m>n^2\equiv 0\pmod{4}</m></p></statement>
+
+			<feedback>
+			  <p>This choice is not correct. Take <m>n=2</m> as a counter-example. Note <m>n^2=4\equiv 0\pmod{4}</m>. Then <m>2n=4\equiv 4\not\equiv 0\pmod{8}</m>.</p>
+			</feedback>
+		  </choice>
+		</choices>
+	  </exercise>
+	</exercises>
+  </section>
+
+  <section xml:id="substitution">
+    <title>Substitution</title>
+
+	<p>
+	  When we say that two integers are equivalent modulo <m>m</m> for some integer <m>m</m>, we really mean it! When an integer is part of a sum or product modulo <m>m</m>, any integer equivalent to it can be substituted into the equivalence without affecting its truth value. This follows from theorem <xref ref="arith-thm" />.
+	</p>
+
+	<p>
+	  For example, consider the equivalence <m>7\cdot 3\equiv 1\pmod{4}</m>. We can see that this is true because <m>7\cdot 3=21=1+4\cdot 5</m>. Also note that <m>7\equiv 3\pmod{4}</m>, so from this we conclude that <m>7\cdot 3\equiv 3\cdot 3\pmod{4}</m>. We can effectively <q>swap out</q> the 7 for 3 since we are only considering the integers modulo 4.
+	</p>
+
+	<p>
+      This is most useful when working with unknowns in a modular equivalence. Consider the equivalence <m>7x\equiv 1\pmod{4}</m>. Once again, we can swap out 7 for 3 here since <m>7\equiv 3\pmod{4}</m>, therefore <m>7x\equiv 3x\equiv 1\pmod{4}</m>. <alert>Note:</alert> this only applies to values which are part of a product or sum. <m>x^4\not\equiv x^1\pmod{3}</m> even though <m>4\equiv 1\pmod{3}</m>, however <m>x^4\equiv (x+3)^4\pmod{3}</m> because <m>x\equiv x+3\pmod{3}</m>.
+	</p>
+
+	<exercises>
+	  <exercise label="mod-def-review">
+		<title>Modular Equivalence Review</title>
+
+		<statement>
+		  <p>Match each expression on the left with an equivalent expression on the right.</p>
+		</statement>
+
+		<matches>
+		  <match order="1">
+			<premise><m>3n+5\equiv 9\pmod{4}</m></premise>
+			<response><m>n\equiv 0\pmod{4}</m></response>
+		  </match>
+
+		  <match order="4">
+			<premise><m>(3n-4)^2\equiv 0\pmod{4}</m></premise>
+			<response><m>n^2\equiv 0\pmod{4}</m></response>
+		  </match>
+
+		  <match order="2">
+			<premise><m>(2n-1)^2+2n\equiv 0\pmod{4}</m></premise>
+			<response><m>2n+1\equiv 0\pmod{4}</m></response>
+		  </match>
+
+		  <match order="3">
+			<premise><m>(n-1)^2\equiv 0\pmod{4}</m></premise>
+			<response><m>n^2-2n+1\equiv 0\pmod{4}</m></response>
+		  </match>
+		</matches>
+	  </exercise>
+	</exercises>
+  </section>
+
+  <section xml:id="par-divis">
+    <title>Parity and Divisibility</title>
+
+	<p>
+	  We can also define evenness and oddness (also known as parity) in terms of modular arithmetic.
+	  <theorem xml:id="parity-thm">
+		<statement>
+		  An integer <m>n</m> is even if and only if <m>n\equiv 0\pmod{2}</m>, and <m>n</m> is odd if and only if <m>n\equiv 1\pmod{2}</m>.
+		</statement>
+
+		<proof>
+		  <p>
+			First we prove that if an arbitrary integer <m>n</m> is even or odd, then it is equivalent to 0 or 1 modulo 2, respectively. Consider an arbitrary integer <m>n</m>. If <m>n</m> is even, <m>n=2k</m> for some integer <m>k</m> by the definition of even. Note that <m>2k\equiv 0k\equiv 0\pmod{2}</m> for any integer <m>k</m>, therefore <m>n\equiv 0\pmod{2}</m>. If <m>n</m> is odd, then <m>n=2k+1</m> for some integer <m>k</m> by the definition of odd. Similarly note that <m>2k+1\equiv 0k+1\equiv 1\pmod{2}</m> for any integer <m>k</m>, therefore <m>n\equiv 1\pmod{2}</m>.
+		  </p>
+
+		  <p>
+			Second we prove that if an arbitrary integer <m>n</m> is equivalent to 0 or 1 modulo 2, then it is even or odd, respectively. Consider an arbitrary integer <m>n</m>. Assume <m>n\equiv 0\pmod{2}</m>. Then <m>n=2k+0=2k</m> for some integer <m>k</m> by the definition of modular equivalence, and thus <m>n</m> is even. Assume <m>n\equiv 1\pmod{2}</m>. Then <m>n=2k+1</m> for some integer <m>k</m> by the definition of modular equivalence, and thus <m>n</m> is odd.
+		  </p>
+
+		  <p>
+			Since we proved the forward and reverse directions, we conclude that the theorem holds.
+		  </p>
+		</proof>
+	  </theorem>
+	  In other words, an integer is even if it has remainder 0 when divided by 2, and odd if it has remainder 1 when divided by 2.
+	</p>
+
+	<p>
+	  We can extend this notion more generally and use modular arithmetic to represent divisibility as well.
+	  <theorem xml:id="divis">
+		<statement>
+		  An integer <m>n</m> is evenly divisible by another integer <m>d</m> if and only if <m>n\equiv 0\pmod{d}</m>.
+		</statement>
+	  </theorem>
+
+	  This theorem can be employed to use modular arithmetic to solve divisibility proofs. For example, we will prove that if an integer <m>n</m> is divisible by 7 (written <m>7\mid n</m> and read <q>7 divides <m>n</m></q>), that <m>7\mid n^2-n</m>. By theorem <xref ref="divis" />, <m>n\equiv 0\pmod{7}</m>, therefore <m>n^2\equiv 0^2\equiv 0\pmod{7}</m>, and <m>n^2-n\equiv 0-0\equiv 0\pmod{7}</m>. Thus, <m>n^2-n</m> is divisible by 7.
+	</p>
+  </section>
+
+  <section xml:id="mod-inverses">
+	<title>Modular Inverses</title>
+
+	<p>
+	  While addition, subtraction, and multiplication all work seamlessly in modular arithmetic, division is a bit more complicated. Division is not closed over the integers; that is to say that when you divide an integer by another integer, you don't always get an integer back. For this reason, in modular arithmetic, rather than <q>dividing</q> we consider multiplying by an inverse, which may not always be possible as we'll see.
+	</p>
+
+	<p>
+	  <definition xml:id="mod-inverses-def">
+		<statement>
+		  Consider an integer <m>a</m> and a modulus <m>m</m>, the modular inverse of <m>a</m> is itself an integer <m>a^{-1}</m> such that <m>a\cdot a^{-1}\equiv 1\pmod{m}</m>.
+		</statement>
+	  </definition>
+
+	  Admittedly this definition is a little spooky at first glace, but in reality it's not that bad. Let's consider a concrete example where <m>a=3</m> and <m>m=5</m>. Does there exist an integer <m>a^{-1}</m> such that <m>3a^{-1}\equiv 1\pmod{5}</m>? If we try out a few values, we will eventually observe that <m>3\cdot 2\equiv 6\equiv 1\pmod{5}</m>, therefore <m>3^{-1}\equiv 2\pmod{5}</m>. Note that this is an equivalence here (not a strict equality), so since <m>2\equiv 7\pmod{5}</m>, we also observe that <m>3\cdot 7\equiv 21\equiv 1\pmod{5}</m>.
+	</p>
+
+	<p>
+	  Note that modular inverses do not always exist. For example, can we find <m>2^{-1}\pmod{4}</m>? Let's try it out: <m>2\cdot 0\equiv 0\pmod{4}</m>, <m>2\cdot 1\equiv 2\pmod{4}</m>, <m>2\cdot 2\equiv 4\equiv 0\pmod{4}</m>, and <m>2\cdot 3\equiv 6\equiv 2\pmod{4}</m>. Even though we've only tried four values, in reality we've exhausted all of our options. This is because all the integers are equivalent to <m>0,1,2,</m> or <m>3\pmod{4}</m>, hence we only have to check those values. As we can see, however, <m>2^{-1}\pmod{4}</m> does not exist.
+	</p>
+
+	<p>
+	  <theorem xml:id="mod-inverses-exists-thm">
+		<statement>
+		  Consider an integer <m>a</m> and a modulus <m>m</m>. <m>a^{-1}\pmod{m}</m> exists if and only if <m>a</m> and <m>m</m> are relatively prime. If <m>a^{-1}</m> exists, it is unique modulo <m>m</m>.
+		</statement>
+	  </theorem>
+	  The term <q>relatively prime</q> can be interpreted as <q>have no common factors.</q> Another term commonly used is <q>co-prime.</q> This term is also equivalent to saying that the greatest common denominator of <m>a</m> and <m>m</m> is 1, abbreviated <m>\gcd(a,m)=1.</m> Note that this definition implies that <m>0^{-1}</m> never exists, because 0 is not relatively prime to any integer. Finally, when we say that <m>a^{-1}</m> is unique modulo <m>m</m> if it exists, we are saying that if <m>a^{-1}</m> exists then there is exactly one integer between 0 (inclusive) and <m>m</m> (exclusive) which is equivalent to <m>a^{-1}</m> modulo <m>m</m>.
+	</p>
+
+	<p>
+	  Although there is an efficient algorithm for computing modular inverses of large numbers, we have opted not to teach it this semester to cut down on material. The best way to search for the modular inverse of <m>a</m> modulo <m>m</m> is to look for a multiple of <m>a</m> that is one above a multiple of <m>m</m>. In other words, find two integers <m>k_1</m> and <m>k_2</m> such that <m>k_1 a\equiv 1 + k_2 m</m>. This can be easily done with a table; see the example below where we compute <m>4^{-1}\pmod{9}</m>.
+	</p>
+
+	<p>
+	  <tabular>
+	  	<col halign="center" /> <col halign="center" /> <col halign="center" />
+		<row header="yes" bottom="minor"><cell>Multiplier</cell> <cell>Multiple of 4</cell> <cell>Multiple of 9</cell></row>
+		<row><cell>1</cell> <cell>4</cell> <cell>9</cell></row>
+		<row><cell>2</cell> <cell>8</cell> <cell>18</cell></row>
+		<row><cell>3</cell> <cell>12</cell> <cell><insert><alert>27</alert></insert></cell></row>
+		<row><cell>4</cell> <cell>16</cell> <cell>36</cell></row>
+		<row><cell>5</cell> <cell>20</cell> <cell>45</cell></row>
+		<row><cell>6</cell> <cell>24</cell> <cell>54</cell></row>
+		<row><cell><insert><alert>7</alert></insert></cell> <cell><insert><alert>28</alert></insert></cell> <cell>63</cell></row>
+		<row><cell>8</cell> <cell>32</cell> <cell>72</cell></row>
+	  </tabular>
+	</p>
+
+	<p>
+	  From our table, we can see that <m>7\cdot 4=28=1+27=1+9\cdot 3</m>. Since <m>7\cdot 4</m> is one above a multiple of 9, we conclude that <m>4^{-1}\equiv 7\pmod{9}</m>. Conveniently, we can also conclude that <m>7^{-1}\equiv 4\pmod{9}</m> for the exact same reason.
+	</p>
+
+	<exercises>
+	  <exercisegroup>
+		<introduction>
+		  <p>For each of the following questions, compute the value of <m>a^{-1}\pmod{m}</m>, or enter <q>DNE</q> if the inverse does not exist.</p>
+		</introduction>
+
+		<exercise label="mod-inv-1">
+		  <title>Q1</title>
+
+		  <statement>
+			<m>5^{-1}\equiv</m><var /><m>\pmod{11}</m>
+		  </statement>
+
+		  <setup>
+			<var>
+			  <condition number="9">
+			  	<feedback>
+				  <p>This is correct. <m>5\cdot 9=45=44+1\equiv 1\pmod{11}</m>.</p>
+				</feedback>
+			  </condition>
+
+			  <condition string=".*">
+			  	<feedback>
+				  <p>Incorrect.</p>
+				</feedback>
+			  </condition>
+			</var>
+		  </setup>
+		</exercise>
+
+		<exercise label="mod-inv-2">
+		  <title>Q2</title>
+
+		  <statement>
+			<m>6^{-1}\equiv</m><var /><m>\pmod{12}</m>
+		  </statement>
+
+		  <setup>
+			<var>
+			  <condition string="DNE">
+			  	<feedback>
+				  <p>This is correct. <m>6^{-1}\pmod{12}</m> does not exist because 6 and 12 are not relatively prime.</p>
+				</feedback>
+			  </condition>
+
+			  <condition string=".*">
+			  	<feedback>
+				  <p>Incorrect.</p>
+				</feedback>
+			  </condition>
+			</var>
+		  </setup>
+		</exercise>
+
+		<exercise label="mod-inv-3">
+		  <title>Q3</title>
+
+		  <statement>
+			<m>7^{-1}\equiv</m><var /><m>\pmod{12}</m>
+		  </statement>
+
+		  <setup>
+			<var>
+			  <condition number="7">
+			  	<feedback>
+				  <p>This is correct. <m>7\cdot 7=49=48+1\equiv 1\pmod{12}</m>.</p>
+				</feedback>
+			  </condition>
+
+			  <condition string=".*">
+			  	<feedback>
+				  <p>Incorrect.</p>
+				</feedback>
+			  </condition>
+			</var>
+		  </setup>
+		</exercise>
+	  </exercisegroup>
+	</exercises>
+  </section>
+
+  <section>
+	<title>Linear Congruences</title>
+
+	<p>
+	  One of the most useful applications for modular inverses is for solving linear congruences. For example, let's try to solve the congruence <m>4x+1\equiv 3\pmod{5}</m>. First we can subtract 1 from both sides to obtain <m>4x\equiv 2\pmod{5}</m>. We can then guess and check to find that <m>4^{-1}\equiv 4\pmod{5}</m>, therefore <m>4^{-1}\cdot 4x\equiv 4^{-1}\cdot 2\pmod{5}</m>. The left-hand-side simplifies to <m>4^{-1}\cdot 4x\equiv 1\cdot x\equiv x\pmod{5}</m>, and the right-hand-side simplifies to <m>4^{-1}\cdot 2\equiv 4\cdot 2\equiv 8\equiv 3\pmod{5}</m>. Thus, <m>x\equiv 3\pmod{5}</m>. We can check our answer to make sure it is correct. If we plug in 3 to our original equation, we can see that <m>4\cdot 3+1=13</m>, and 13 is indeed equivalent to 3 modulo 5, and this will hold for any integer which is equivalent to 3 modulo 5.
+	</p>
+
+	<p>
+	  If we have a linear congruence of the form <m>ax\equiv b\pmod{m}</m> where <m>\gcd(a,m)\ne 1</m>, then the congruence either has multiple solutions or no solutions. For instance, <m>4x\equiv 2\pmod{6}</m> has two solutions, namely <m>x\equiv 2\pmod{6}</m> and <m>x\equiv 5\pmod{6}</m>. However, the equivalence <m>4x\equiv 1\pmod{6}</m> has no solutions. The only method we expect you to know for these types of problems is guessing and checking.
+	</p>
+
+	<exercises>
+	  <exercise label="lin-cong-1">
+	    <title>Multiple Answer Multiple Choice</title>
+
+		<statement>
+		  <p>Which of the following are solutions to the linear congruence <m>4x\equiv 2\pmod{14}</m>?</p>
+		</statement>
+
+		<choices>
+		  <choice correct="yes">
+		    <statement><p><m>x=-3</m></p></statement>
+
+			<feedback>
+			  <p>This choice is correct. <m>4\cdot -3=-12\equiv 2\pmod{14}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="no">
+		    <statement><p><m>x=0</m></p></statement>
+
+			<feedback>
+			  <p>This choice is not correct. If <m>x=0</m> then <m>4x=4\cdot 0=0\equiv 0\pmod{14}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="yes">
+		    <statement><p><m>x=4</m></p></statement>
+
+			<feedback>
+			  <p>This choice is correct. <m>4\cdot 4=16\equiv 2\pmod{14}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="no">
+		    <statement><p><m>x=7</m></p></statement>
+
+			<feedback>
+			  <p>This choice is not correct. If <m>x=7</m> then <m>4x=4\cdot 7=28\equiv 0\pmod{14}</m>.</p>
+			</feedback>
+		  </choice>
+		  <choice correct="no">
+		    <statement><p><m>x=9</m></p></statement>
+
+			<feedback>
+			  <p>This choice is not correct. If <m>x=9</m> then <m>4x=4\cdot 9=36\equiv 8\pmod{14}</m>.</p>
+			</feedback>
+		  </choice>
+		</choices>
+	  </exercise>
+
+	  <exercise label="lin-cong-2">
+		<title>Find the unique solution for the following linear congruence, or enter <q>DNE</q> if a unique solution does not exist.</title>
+
+		<statement>
+		  <m>7x+3\equiv 1\pmod{16}.\ x\equiv</m><var /><m>\pmod{16}</m>.
+		</statement>
+
+		<setup>
+		  <var>
+			<condition number="2">
+			  <feedback>
+				<p>This is correct. We first simplify the congruence to be <m>7x\equiv -2\equiv 14\pmod{16}</m>, and then note that <m>7\cdot 2=14\equiv 14\pmod{16}</m>. Since <m>7</m> and <m>16</m> are relatively prime, this solution is unique modulo <m>16</m>.</p>
+			  </feedback>
+			</condition>
+
+			<condition string="DNE">
+			  <feedback>
+			    <p>Incorrect. Consider trying some small values to see if any work.</p>
+			  </feedback>
+		    </condition>
+
+			<condition string=".*">
+			  <feedback>
+			    <p>Incorrect.</p>
+			  </feedback>
+		    </condition>
+		  </var>
+		</setup>
+	  </exercise>
+	</exercises>
+  </section>
+
+</chapter>

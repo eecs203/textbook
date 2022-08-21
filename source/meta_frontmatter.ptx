@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<frontmatter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="meta_frontmatter">
+  <titlepage>
+    <author>
+      <personname>EECS 203 Staff</personname>
+      <department>Electrical Engineering and Computer Science</department>
+      <institution>University of Michigan</institution>
+    </author>
+    <date><today/></date>
+  </titlepage>
+
+  <colophon>
+
+    <website>
+      <name><c>my-website.org</c></name>
+      <address>http://pretextbook.org</address>
+    </website>
+
+    <copyright>
+      <year>2022</year>
+      <holder>Something something</holder>
+
+      <shortlicense>
+        We might want to figure out how we're going to license this book
+      </shortlicense>
+    </copyright>
+
+  </colophon>
+
+  <acknowledgement>
+    <p>
+      TODO
+    </p>
+  </acknowledgement>
+
+</frontmatter>
+
